@@ -34,14 +34,14 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function Tracking({ endAddress }) {
-  const [route, setRoute] = useState([]); // Tuyến đường đi
+  const [route, setRoute] = useState([]);
   const [position, setPosition] = useState(null); // vị trí hiện tại của xe
   const [traveledPath, setTraveledPath] = useState([]); // tường đãa đi qua
   const [time, setTime] = useState(0); // thời gian dự kiến
-  const [start, setStart] = useState(null); // tọa độ điểm xuất phát
-  const [end, setEnd] = useState(null); // tọa độ điểm đến
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
 
-  // Địa chỉ xuất phát mặc định
+  // Địa chỉ xuất phát mặc định(SGU)
   const startAddress = { lat: 10.7581, lng: 106.6822 };
 
   // Gọi API để lấy tuyến đườmng từ OSRM

@@ -32,7 +32,6 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
   const [routeName, setRouteName] = useState("");
   const [studentPopUp, setStudentPopUp] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isactiveDrivers, setIsActiveDrivers] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -81,7 +80,6 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
       const driverId = busUpdate.driver;
 
       if (driverId) {
-        // Lấy thông tin tài xế hiện tại
         const driver = await UserController.fetchUserById(driverId);
         const currentAssignedBus = driver?.driverInfo?.assignedBus || [];
 

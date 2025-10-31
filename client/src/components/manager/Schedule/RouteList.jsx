@@ -6,24 +6,33 @@ import { ThreeDots } from "react-loader-spinner";
 
 const cx = classNames.bind(styles);
 
-const RouteList = ({ routeDetail, setRouteDetail }) => {
+const RouteList = ({ searchValue, routeDetail, setRouteDetail }) => {
   const [routes, setRoutes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await RouteController.fetchAllRoutes();
-        setRoutes(response);
+        let response;
+
+        if (searchValue && searchValue.trim() !== "") {
+          const res = await RouteController.fetchRouteNumber(searchValue);
+          response = res ? (Array.isArray(res) ? res : [res]) : [];
+        } else {
+          response = await RouteController.fetchAllRoutes();
+        }
+
+        setRoutes(response || []);
       } catch (error) {
         console.error("Fetch routes error:", error);
+        setRoutes([]);
       } finally {
-        setIsLoading(false); // Tắt loading khi xong
+        setIsLoading(false);
       }
     };
 
     fetchRoutes();
-  }, [routeDetail]);
+  }, [searchValue, routeDetail]);
 
   return (
     <div className={cx("tableWrapper")}>
@@ -79,7 +88,7 @@ const RouteList = ({ routeDetail, setRouteDetail }) => {
                   colSpan="5"
                   style={{ textAlign: "center", padding: "10px" }}
                 >
-                  No routes available
+                  No routes found
                 </td>
               </tr>
             )}
