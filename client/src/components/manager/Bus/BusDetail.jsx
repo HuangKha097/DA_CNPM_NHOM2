@@ -32,11 +32,16 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
   const [routeName, setRouteName] = useState("");
   const [studentPopUp, setStudentPopUp] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isactiveDrivers, setIsActiveDrivers] = useState([]);
 
   useEffect(() => {
     (async () => {
       const drivers = await UserController.fetchUserByRole("driver");
-      setDriver(drivers);
+      const activeUsers = drivers.filter((driver) => {
+        return driver?.driverInfo?.status == "Đang hoạt động";
+      });
+
+      setDriver(activeUsers);
     })();
   }, []);
 
@@ -169,6 +174,7 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
 
   //  Logic handleReset
   const handleReset = async () => {
+    setIsLoading(true);
     const route = await RouteController.fetchRouteNumber(
       busDetail?.routeNumber
     );
@@ -223,6 +229,8 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
     } catch (error) {
       console.error(error);
       toast.error("Có lỗi xảy ra khi reset!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -235,7 +243,7 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
     const value = e.target.value;
     setSearchValue(value);
     if (!value.trim()) {
-      setStudentPopUp(null);
+      setStudentPopUp([]);
     }
   };
 
