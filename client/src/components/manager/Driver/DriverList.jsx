@@ -1,40 +1,26 @@
-import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "../../../assets/css/manager/DriverList.module.scss";
-import * as UserController from "../../../controller/UserController";
-import { ThreeDots } from "react-loader-spinner";
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from '../../../assets/css/manager/DriverList.module.scss';
+import { ThreeDots } from 'react-loader-spinner';
+import useFetchAllDrivers from '../../../hooks/useFetchAllDrivers.js';
 
 const cx = classNames.bind(styles);
 
 const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
-  const [drivers, setDrivers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const drivers = await UserController.fetchUserByRole("driver");
-        setDrivers(drivers || []);
-      } catch (error) {
-        console.error("Lỗi khi tải danh sách tài xế:", error);
-      } finally {
-        setIsLoading(false); // tắt loading
-      }
-    })();
-  }, [driverDetail]);
+  const { loading: loadingFetchAllDriverd, drivers } = useFetchAllDrivers(driverDetail);
 
   const displayDriver = driver ? [driver] : drivers;
 
   return (
-    <div className={cx("tableWrapper")}>
-      {isLoading ? (
+    <div className={cx('tableWrapper')}>
+      {loadingFetchAllDriverd ? (
         <div
           style={{
-            background: "#fff",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200px",
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
           }}
         >
           <ThreeDots
@@ -46,7 +32,7 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
           />
         </div>
       ) : displayDriver.length > 0 ? (
-        <table className={cx("table")}>
+        <table className={cx('table')}>
           <thead>
             <tr>
               <th>Driver ID</th>
@@ -67,10 +53,7 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
                     phone: item?.phone,
                     licenseNumber: item?.driverInfo?.licenseNumber,
                     licenseClass: item?.driverInfo?.licenseClass,
-                    assignedBus:
-                      item?.driverInfo?.assignedBus?.map(
-                        (bus) => bus.busNumber
-                      ) || [],
+                    assignedBus: item?.driverInfo?.assignedBus?.map((bus) => bus.busNumber) || [],
                     status: item?.driverInfo?.status,
                   })
                 }
@@ -81,15 +64,15 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
                 <td>
                   <span
                     className={cx(
-                      "status",
-                      item?.driverInfo?.status === "Đang hoạt động"
-                        ? "active"
-                        : item?.driverInfo?.status === "Nghỉ phép"
-                          ? "leave"
-                          : "inactive"
+                      'status',
+                      item?.driverInfo?.status === 'Đang hoạt động'
+                        ? 'active'
+                        : item?.driverInfo?.status === 'Nghỉ phép'
+                          ? 'leave'
+                          : 'inactive'
                     )}
                   >
-                    {item?.driverInfo?.status || "Chưa cập nhật"}
+                    {item?.driverInfo?.status || 'Chưa cập nhật'}
                   </span>
                 </td>
               </tr>
@@ -97,7 +80,7 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
           </tbody>
         </table>
       ) : (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>
+        <p style={{ textAlign: 'center', marginTop: '20px' }}>
           Không có tài xế nào trong danh sách.
         </p>
       )}
