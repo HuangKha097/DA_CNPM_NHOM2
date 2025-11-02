@@ -10,6 +10,7 @@ const useResetBus = (driverId, busUpdate, setBusUpdate, busDetail, setBusDetail,
   const handleReset = async () => {
     setLoading(true);
     const route = await RouteService.getRouteByRouteNumber(busDetail?.routeNumber);
+    console.log(route);
 
     try {
       const resetData = {
@@ -44,7 +45,7 @@ const useResetBus = (driverId, busUpdate, setBusUpdate, busDetail, setBusDetail,
 
         if (busDetail.routeNumber) {
           const payload = {
-            routeNumber: route?.routeNumber,
+            routeNumber: route?.data?.routeNumber,
             buses: busFilter,
           };
           await RouteService.updateRoute(payload);

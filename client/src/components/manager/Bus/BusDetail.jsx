@@ -15,6 +15,7 @@ import useStudentsHaveBus from '../../../hooks/useStudentsHaveBus.js';
 import useUpdateBus from '../../../hooks/useUpdateBus.js';
 import useResetBus from '../../../hooks/useResetBus.js';
 import useFindStudent from '../../../hooks/useFindStudent.js';
+import useOpenPopupStudent from '../../../hooks/useOpenPopupStudent.js';
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +36,7 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
   const { routeName } = useRouteName(busDetail?.routeNumber || '');
   const { studentsHaveBus } = useStudentsHaveBus(isEditing);
 
+  // useHooks logic
   const { handleSave, loading: loadingSave } = useUpdateBus(
     busUpdate?.driver,
     busUpdate,
@@ -59,6 +61,15 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
     true
   );
 
+  const { handleOpenStudentPopup } = useOpenPopupStudent(
+    setStudentsSelected,
+    busUpdate.students,
+    setStudentPopUp,
+    setSearchValue,
+    setShowListStudent
+  );
+
+  // others logic
   const handleChangeBus = (e) => {
     const { name, value } = e.target;
     setBusUpdate({ ...busUpdate, [name]: value });
@@ -90,16 +101,6 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
     setShowListStudent(false);
     setStudentsSelected([]); // Reset về mảng rỗng
   }, [busDetail]);
-
-  //   Hàm xử lý khi mở pop-up "aadd student"
-  const handleOpenStudentPopup = () => {
-    setStudentsSelected(busUpdate.students || []);
-
-    setStudentPopUp([]);
-    setSearchValue('');
-
-    setShowListStudent(true);
-  };
 
   return (
     <div className={cx('busDetailWrapper')}>

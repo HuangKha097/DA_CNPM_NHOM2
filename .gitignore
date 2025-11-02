@@ -31,7 +31,7 @@ dist-ssr/
 .env.production.local
 .env.test.local
 
-# Lock files (optional — tránh conflict khi có nhiều package)
+# Lock files
 package-lock.json
 pnpm-lock.yaml
 yarn.lock

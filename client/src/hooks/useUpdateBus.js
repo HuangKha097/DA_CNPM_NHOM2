@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -10,11 +9,11 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
 
   const handleSave = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
+      const driver = await UserService.getUserById(driverId);
+      console.log(driver?.data?.[0]);
+      const currentAssignedBus = driver?.data?.[0]?.driverInfo?.assignedBus || [];
       if (driverId) {
-        const driver = await UserService.getUserById(driverId);
-        const currentAssignedBus = driver?.driverInfo?.assignedBus || [];
-
         const activeBus = currentAssignedBus.find((bus) => bus.busStatus === 'Đang chạy');
 
         if (
@@ -34,9 +33,6 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
 
       if (res?.success) {
         if (driverId) {
-          const driverRes = await UserService.getUserById(driverId);
-          const currentAssignedBus = driverRes?.driverInfo?.assignedBus || [];
-
           const isExisting = currentAssignedBus.some(
             (bus) => String(bus.busId) === String(busUpdate._id)
           );
@@ -64,6 +60,7 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
               },
             ];
           }
+          console.log(updateAssignedBus);
 
           await UserService.updateDriverInfo(driverId, { assignedBus: updateAssignedBus });
 
@@ -84,7 +81,7 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
       console.error(error);
       toast.error('Có lỗi xảy ra khi cập nhật');
     } finally {
-      setLoading(false); // ✅ tắt loading sau khi xong
+      setLoading(false);
     }
   };
 

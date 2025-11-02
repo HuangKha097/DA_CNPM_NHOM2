@@ -1,40 +1,25 @@
-import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "../../../assets/css/manager/BusList.module.scss";
-import * as BusController from "../../../controller/BusController";
-import { ThreeDots } from "react-loader-spinner";
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from '../../../assets/css/manager/BusList.module.scss';
+import { ThreeDots } from 'react-loader-spinner';
+import useFetchAllBuses from '../../../hooks/useFetchAllBuses.js';
 
 const cx = classNames.bind(styles);
 
 const List = ({ bus, setBusDetail, busDetail }) => {
-  const [buses, setBuses] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await BusController.fetchAllBuses();
-        setBuses(response || []);
-      } catch (error) {
-        console.error("Lỗi khi tải danh sách bus:", error);
-      } finally {
-        setIsLoading(false); // tắt loading
-      }
-    })();
-  }, [busDetail]);
-
+  const { buses, loading: fetchAllLoading } = useFetchAllBuses(busDetail);
   const displayBuses = bus ? [bus] : buses;
 
   return (
-    <div className={cx("tableWrapper")}>
-      {isLoading ? (
+    <div className={cx('tableWrapper')}>
+      {fetchAllLoading ? (
         <div
           style={{
-            background: "#fff",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200px",
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
           }}
         >
           <ThreeDots
@@ -46,7 +31,7 @@ const List = ({ bus, setBusDetail, busDetail }) => {
           />
         </div>
       ) : displayBuses.length > 0 ? (
-        <table className={cx("table")}>
+        <table className={cx('table')}>
           <thead>
             <tr>
               <th>Bus ID</th>
@@ -69,23 +54,23 @@ const List = ({ bus, setBusDetail, busDetail }) => {
                     busStatus: item.busStatus,
                     capacity: item.capacity || 0,
                     currentStudents: item.student || 0,
-                    lastUpdate: "",
+                    lastUpdate: '',
                     students: item.students || [],
                   })
                 }
               >
                 <td>{item.busNumber}</td>
-                <td>{item?.driver?.fullName || "Chưa có"}</td>
-                <td>{item.name || item.routeNumber || "Chưa có"}</td>
+                <td>{item?.driver?.fullName || 'Chưa có'}</td>
+                <td>{item.name || item.routeNumber || 'Chưa có'}</td>
                 <td>
                   <span
                     className={cx(
-                      "status",
-                      item.busStatus === "Đang chạy"
-                        ? "running"
-                        : item.busStatus === "Bảo trì"
-                          ? "maintenance"
-                          : "stopped"
+                      'status',
+                      item.busStatus === 'Đang chạy'
+                        ? 'running'
+                        : item.busStatus === 'Bảo trì'
+                          ? 'maintenance'
+                          : 'stopped'
                     )}
                   >
                     {item.busStatus}
@@ -96,7 +81,7 @@ const List = ({ bus, setBusDetail, busDetail }) => {
           </tbody>
         </table>
       ) : (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>
+        <p style={{ textAlign: 'center', marginTop: '20px' }}>
           Không có xe buýt nào trong danh sách.
         </p>
       )}
