@@ -51,7 +51,7 @@ export default function Tracking({ endAddress }) {
       const endCoords = findCoordinates(endAddress);
 
       if (!startCoords || !endCoords) {
-        console.error("Không tìm thấy tọa độ start hoặc end");
+
         return;
       }
 

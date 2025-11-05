@@ -7,13 +7,13 @@ import useFetchAllDrivers from '../../../hooks/useFetchAllDrivers.js';
 const cx = classNames.bind(styles);
 
 const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
-  const { loading: loadingFetchAllDriverd, drivers } = useFetchAllDrivers(driverDetail);
+  const { loading: loadingFetchAllDriver, drivers } = useFetchAllDrivers(driverDetail);
 
   const displayDriver = driver ? [driver] : drivers;
 
   return (
     <div className={cx('tableWrapper')}>
-      {loadingFetchAllDriverd ? (
+      {loadingFetchAllDriver ? (
         <div
           style={{
             background: '#fff',
