@@ -6,13 +6,13 @@ import * as RouteController from "../../../controller/RouteController";
 
 import toast, { Toaster } from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
+import useFetchAllBuses from '../../../hooks/useFetchAllBuses.js';
 
 const cx = classNames.bind(styles);
 
 const RouteDetail = ({ routeDetail, setRouteDetail }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(routeDetail || {});
-  const [buses, setBuses] = useState([]);
   const [busesChoose, setBusesChoose] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,17 +23,7 @@ const RouteDetail = ({ routeDetail, setRouteDetail }) => {
   }, [routeDetail]);
 
   // Lấy danh sách bus
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await BusController.fetchAllBuses();
-        setBuses(response || []);
-      } catch (error) {
-        console.log(error);
-        toast.error("Không thể tải danh sách xe buýt");
-      }
-    })();
-  }, []);
+   const {buses, loading: fetchAllBusLoading} = useFetchAllBuses()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
