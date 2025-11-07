@@ -1,35 +1,36 @@
-import React, { useState } from "react";
-import classNames from "classnames/bind";
-import styles from "../../assets/css/manager/BusTab.module.scss";
+import React, { useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from '../../assets/css/manager/BusTab.module.scss';
 
-import RouteDetail from "./Schedule/RouteDetail";
-import RouteList from "./Schedule/RouteList.jsx";
+import RouteDetail from './Schedule/RouteDetail';
+import RouteList from './Schedule/RouteList.jsx';
 
-import * as RouteController from "../../controller/RouteController.js";
+import * as RouteController from '../../controller/RouteController.js';
 
 const cx = classNames.bind(styles);
 
 const ScheduleTab = () => {
+  const [isShowDetail, setIsShowDetail] = useState(false);
   const [ActiveFirstTitle, setActiveFirstTitle] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [route, setRoute] = useState(null); // route tìm được
   const [routeDetail, setRouteDetail] = useState({
-    _id: "",
-    routeNumber: "",
-    name: "",
-    startLocation: "",
-    endLocation: "",
-    totalDistance: "",
-    totalTime: "",
-    status: "",
+    _id: '',
+    routeNumber: '',
+    name: '',
+    startLocation: '',
+    endLocation: '',
+    totalDistance: '',
+    totalTime: '',
+    status: '',
   });
 
-  console.log("searchValue:", searchValue);
-  console.log("routeDetail:", routeDetail);
+  console.log('searchValue:', searchValue);
+  console.log('routeDetail:', routeDetail);
 
   // Khi nhấn Enter
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       getRouteData();
     }
   };
@@ -51,7 +52,7 @@ const ScheduleTab = () => {
       }
 
       const res = await RouteController.fetchRouteNumber(searchValue);
-      console.log("fetchRouteNumber:", res);
+      console.log('fetchRouteNumber:', res);
 
       if (res) {
         // Nếu API trả về object, chứ không phải mảng
@@ -72,14 +73,16 @@ const ScheduleTab = () => {
         setRoute(null);
       }
     } catch (error) {
-      console.error("Search route error:", error);
+      console.error('Search route error:', error);
     }
   };
-
+  const onClose = () => {
+    setIsShowDetail(true);
+  };
   return (
-    <div className={cx("tab-wrapper")}>
-      <div className={cx("left-block")}>
-        <label htmlFor="search" className={cx("search")}>
+    <div className={cx('tab-wrapper')}>
+      <div className={cx('left-block')}>
+        <label htmlFor="search" className={cx('search')}>
           <input
             type="text"
             name="search"
@@ -89,22 +92,22 @@ const ScheduleTab = () => {
             onKeyDown={handleKeyDown}
           />
         </label>
-        <div className={cx("filter-wrapper")}></div>
-        <div className={cx("bus-list")}>
+        <div className={cx('filter-wrapper')}></div>
+        <div className={cx('bus-list')}>
           <RouteList
             searchValue={searchValue}
             routeDetail={routeDetail}
             setRouteDetail={setRouteDetail}
+            onClose={onClose}
           />
         </div>
       </div>
 
-      <div className={cx("right-block")}>
-        <RouteDetail
-          routeDetail={routeDetail}
-          setRouteDetail={setRouteDetail}
-        />
-      </div>
+      {isShowDetail && (
+        <div className={cx('right-block')}>
+          <RouteDetail routeDetail={routeDetail} setRouteDetail={setRouteDetail} />
+        </div>
+      )}
     </div>
   );
 };

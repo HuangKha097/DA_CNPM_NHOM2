@@ -6,7 +6,7 @@ import useFetchAllDrivers from '../../../hooks/useFetchAllDrivers.js';
 
 const cx = classNames.bind(styles);
 
-const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
+const DriverList = ({ setDriverDetail, driverDetail, driver, onClose }) => {
   const { loading: loadingFetchAllDriver, drivers } = useFetchAllDrivers(driverDetail);
 
   const displayDriver = driver ? [driver] : drivers;
@@ -45,7 +45,8 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
             {displayDriver.map((item, index) => (
               <tr
                 key={index}
-                onClick={() =>
+                onClick={() => {
+                  onClose();
                   setDriverDetail({
                     _id: item?._id,
                     driverNumber: item?.driverInfo?.driverNumber,
@@ -55,8 +56,8 @@ const DriverList = ({ setDriverDetail, driverDetail, driver }) => {
                     licenseClass: item?.driverInfo?.licenseClass,
                     assignedBus: item?.driverInfo?.assignedBus?.map((bus) => bus.busNumber) || [],
                     status: item?.driverInfo?.status,
-                  })
-                }
+                  });
+                }}
               >
                 <td>{item?.driverInfo?.driverNumber}</td>
                 <td>{item?.fullName}</td>

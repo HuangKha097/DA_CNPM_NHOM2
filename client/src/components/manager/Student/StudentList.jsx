@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
-import classNames from "classnames/bind";
-import styles from "../../../assets/css/manager/StudentList.module.scss";
-import * as UserController from "../../../controller/UserController";
-import { ThreeDots } from "react-loader-spinner";
+import React, { useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from '../../../assets/css/manager/StudentList.module.scss';
+import * as UserController from '../../../controller/UserController';
+import { ThreeDots } from 'react-loader-spinner';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +15,7 @@ const StudentList = ({
   studentsSelected,
   studentPopUp,
   studentsHaveBus = [],
+  onClose,
 }) => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +23,7 @@ const StudentList = ({
   useEffect(() => {
     const fetchStudentList = async () => {
       try {
-        const res = await UserController.fetchUserByRole("parent");
+        const res = await UserController.fetchUserByRole('parent');
         if (Array.isArray(res)) {
           const allChildren = res.flatMap((parent) =>
             (parent.parentInfo?.children || []).map((child) => ({
@@ -39,7 +40,7 @@ const StudentList = ({
           setStudents(allChildren);
         }
       } catch (error) {
-        console.error("Fetch student list error:", error);
+        console.error('Fetch student list error:', error);
       } finally {
         setIsLoading(false); // tắt loading
       }
@@ -51,9 +52,7 @@ const StudentList = ({
   const displayStudents = useMemo(() => {
     if (Array.isArray(studentPopUp)) {
       if (studentPopUp.length === 0) return [];
-      return studentPopUp.filter(
-        (s) => !studentsHaveBus.some((h) => h._id === s._id)
-      );
+      return studentPopUp.filter((s) => !studentsHaveBus.some((h) => h._id === s._id));
     }
 
     if (Array.isArray(student) && student.length > 0) {
@@ -66,9 +65,7 @@ const StudentList = ({
   const handleSelectStudent = (student) => {
     setStudentsSelected?.((prev) => {
       const isSelected = prev.some((s) => s._id === student._id);
-      return isSelected
-        ? prev.filter((s) => s._id !== student._id)
-        : [...prev, student];
+      return isSelected ? prev.filter((s) => s._id !== student._id) : [...prev, student];
     });
   };
 
@@ -79,19 +76,18 @@ const StudentList = ({
   };
 
   const isAllSelected =
-    displayStudents.length > 0 &&
-    studentsSelected?.length === displayStudents.length;
+    displayStudents.length > 0 && studentsSelected?.length === displayStudents.length;
 
   return (
-    <div className={cx("tableWrapper")}>
+    <div className={cx('tableWrapper')}>
       {isLoading ? (
         <div
           style={{
-            background: "#fff",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200px",
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200px',
           }}
         >
           <ThreeDots
@@ -103,16 +99,12 @@ const StudentList = ({
           />
         </div>
       ) : (
-        <table className={cx("table")}>
+        <table className={cx('table')}>
           <thead>
             <tr>
               {showSelectCheck && (
                 <th>
-                  <input
-                    type="checkbox"
-                    onChange={handleToggleSelectAll}
-                    checked={isAllSelected}
-                  />
+                  <input type="checkbox" onChange={handleToggleSelectAll} checked={isAllSelected} />
                 </th>
               )}
               <th>Student Number</th>
@@ -125,25 +117,21 @@ const StudentList = ({
           <tbody>
             {displayStudents.length === 0 ? (
               <tr>
-                <td
-                  colSpan="6"
-                  style={{ textAlign: "center", padding: "10px" }}
-                >
+                <td colSpan="6" style={{ textAlign: 'center', padding: '10px' }}>
                   {Array.isArray(studentPopUp)
-                    ? "Nhập từ khóa để tìm học sinh."
-                    : "Không tìm thấy học sinh."}
+                    ? 'Nhập từ khóa để tìm học sinh.'
+                    : 'Không tìm thấy học sinh.'}
                 </td>
               </tr>
             ) : (
               displayStudents.map((item, index) => {
-                const isChecked = studentsSelected?.some(
-                  (s) => s._id === item._id
-                );
+                const isChecked = studentsSelected?.some((s) => s._id === item._id);
 
                 return (
                   <tr
                     key={item._id || index}
-                    onClick={() =>
+                    onClick={() => {
+                      onClose();
                       setStudentDetail?.({
                         _id: item._id,
                         studentNumber: item.studentNumber,
@@ -153,8 +141,8 @@ const StudentList = ({
                         parentName: item.parentName,
                         parentPhone: item.parentPhone,
                         registeredBus: item.registeredBus,
-                      })
-                    }
+                      });
+                    }}
                   >
                     {showSelectCheck && (
                       <td>
@@ -166,22 +154,22 @@ const StudentList = ({
                         />
                       </td>
                     )}
-                    <td>{item.studentNumber || "N/A"}</td>
+                    <td>{item.studentNumber || 'N/A'}</td>
                     <td>{item.name}</td>
                     <td>{item.grade}</td>
                     <td>{item.parentPhone}</td>
                     <td>
                       <span
                         className={cx(
-                          "status",
-                          item.status === "Đang đi học"
-                            ? "active"
-                            : item.status === "Vắng mặt"
-                              ? "leave"
-                              : "inactive"
+                          'status',
+                          item.status === 'Đang đi học'
+                            ? 'active'
+                            : item.status === 'Vắng mặt'
+                              ? 'leave'
+                              : 'inactive'
                         )}
                       >
-                        {item.status || "Chưa cập nhật"}
+                        {item.status || 'Chưa cập nhật'}
                       </span>
                     </td>
                   </tr>

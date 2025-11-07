@@ -6,7 +6,7 @@ import useFetchAllBuses from '../../../hooks/useFetchAllBuses.js';
 
 const cx = classNames.bind(styles);
 
-const List = ({ bus, setBusDetail, busDetail }) => {
+const List = ({ bus, setBusDetail, busDetail, onClose }) => {
   const { buses, loading: fetchAllLoading } = useFetchAllBuses(busDetail);
   const displayBuses = bus ? [bus] : buses;
 
@@ -44,7 +44,8 @@ const List = ({ bus, setBusDetail, busDetail }) => {
             {displayBuses.map((item, index) => (
               <tr
                 key={index}
-                onClick={() =>
+                onClick={() => {
+                  onClose();
                   setBusDetail({
                     _id: item._id,
                     busNumber: item.busNumber,
@@ -56,8 +57,9 @@ const List = ({ bus, setBusDetail, busDetail }) => {
                     currentStudents: item.student || 0,
                     lastUpdate: '',
                     students: item.students || [],
-                  })
-                }
+                  });
+
+                }}
               >
                 <td>{item.busNumber}</td>
                 <td>{item?.driver?.fullName || 'Chưa có'}</td>

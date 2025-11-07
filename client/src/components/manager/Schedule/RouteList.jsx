@@ -6,7 +6,7 @@ import useFetchRouteByNumber from '../../../hooks/useFetchRouteByNumber.js';
 
 const cx = classNames.bind(styles);
 
-const RouteList = ({ searchValue, routeDetail, setRouteDetail }) => {
+const RouteList = ({ searchValue, routeDetail, setRouteDetail, onClose }) => {
   const { routes, loading: loadingFindRoutes } = useFetchRouteByNumber({
     searchValue,
     routeDetail,
@@ -47,7 +47,10 @@ const RouteList = ({ searchValue, routeDetail, setRouteDetail }) => {
               routes.map((route) => (
                 <tr
                   key={route._id}
-                  onClick={() => setRouteDetail({ ...route })}
+                  onClick={() => {
+                    onClose();
+                    setRouteDetail({ ...route });
+                  }}
                   className={cx('row')}
                 >
                   <td>{route.routeNumber}</td>

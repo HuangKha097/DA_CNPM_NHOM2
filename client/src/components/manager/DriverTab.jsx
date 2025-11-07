@@ -1,35 +1,34 @@
-import React, { useState } from "react";
-import classNames from "classnames/bind";
-import styles from "../../assets/css/manager/BusTab.module.scss";
-import DriverDetail from "../manager/Driver/DriverDetail";
-import DriverList from "../manager/Driver/DriverList";
+import React, { useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from '../../assets/css/manager/BusTab.module.scss';
+import DriverDetail from '../manager/Driver/DriverDetail';
+import DriverList from '../manager/Driver/DriverList';
 
-import * as UserController from "../../controller/UserController";
-import Filter from "../Filter.jsx";
+import * as UserController from '../../controller/UserController';
 
 const cx = classNames.bind(styles);
 
 const DriverTab = () => {
   const [ActiveFirstTitle, setActiveFirstTitle] = useState(false);
-
-  const [searchValue, setSearchValue] = useState("");
+  const [isShowDetail, setIsShowDetail] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   console.log(searchValue);
 
   const [driver, setDriver] = useState(null); // driver tìm được
   const [driverDetail, setDriverDetail] = useState({
-    _id: "",
-    driverNumber: "",
-    fullName: "",
-    phone: "",
-    licenseNumber: "",
-    licenseClass: "",
-    status: "",
-    assignedBus: "",
+    _id: '',
+    driverNumber: '',
+    fullName: '',
+    phone: '',
+    licenseNumber: '',
+    licenseClass: '',
+    status: '',
+    assignedBus: '',
   });
   console.log(driverDetail);
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       getUserData();
     }
   };
@@ -48,10 +47,7 @@ const DriverTab = () => {
         setDriver(null); // clear => quay về list mặc định
         return;
       }
-      const res = await UserController.getDriverData(
-        ActiveFirstTitle,
-        searchValue
-      );
+      const res = await UserController.getDriverData(ActiveFirstTitle, searchValue);
       console.log(res?.user);
 
       if (res?.success && res?.user) {
@@ -70,14 +66,16 @@ const DriverTab = () => {
         setDriver(null);
       }
     } catch (error) {
-      console.error("Search driver error:", error);
+      console.error('Search driver error:', error);
     }
   };
-
+  const onClose = () => {
+    setIsShowDetail(true);
+  };
   return (
-    <div className={cx("tab-wrapper")}>
-      <div className={cx("left-block")}>
-        <label htmlFor="search" className={cx("search")}>
+    <div className={cx('tab-wrapper')}>
+      <div className={cx('left-block')}>
+        <label htmlFor="search" className={cx('search')}>
           <input
             type="text"
             name="search"
@@ -87,27 +85,27 @@ const DriverTab = () => {
             onKeyDown={handleKeyDown}
           />
         </label>
-        <div className={cx("filter-wrapper")}>
+        <div className={cx('filter-wrapper')}>
           {/* <Filter
             firstTitle={"By status"}
             ActiveFirstTitle={ActiveFirstTitle}
             setActiveFirstTitle={setActiveFirstTitle}
           /> */}
         </div>
-        <div className={cx("bus-list")}>
+        <div className={cx('bus-list')}>
           <DriverList
             driver={driver}
             setDriverDetail={setDriverDetail}
             driverDetail={driverDetail}
+            onClose={onClose}
           />
         </div>
       </div>
-      <div className={cx("right-block")}>
-        <DriverDetail
-          driverDetail={driverDetail}
-          setDriverDetail={setDriverDetail}
-        />
-      </div>
+      {isShowDetail && (
+        <div className={cx('right-block')}>
+          <DriverDetail driverDetail={driverDetail} setDriverDetail={setDriverDetail} />
+        </div>
+      )}
     </div>
   );
 };
