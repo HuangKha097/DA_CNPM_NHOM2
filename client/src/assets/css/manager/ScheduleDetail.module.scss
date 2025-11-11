@@ -1,171 +1,363 @@
+
 .ScheduleDetailWrapper {
+
+  --color-primary: #007bff;
+  --color-primary-dark: #0056b3;
+  --color-primary-light: #e6f2ff;
+
+  --color-success: #28a745;
+  --color-success-dark: #218838;
+
+  --color-danger: #dc3545;
+  --color-danger-dark: #c82333;
+  --color-danger-light: #fseedf;
+
+  --color-warning: #fd7e14;
+  --color-warning-light: #fff4e8;
+
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-placeholder: #6c757d;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-subtle: #fafafa;
+  --border-color: #dee2e6;
+
+  /* Cài đặt gốc */
   width: 100%;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   height: 100%;
+  padding: 2rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: slideInFromRight 0.4s ease;
   overflow: hidden;
 
-  h4 {
-    margin-bottom: 20px;
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: #333;
-  }
-}
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
+    .backBtn {
 
-  .label {
-    font-weight: 600;
-    color: #000000;
-    flex: 1;
-  }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      padding: 0;
+      font-size: 1.6rem;
+      font-weight: 600;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
 
-  .value {
-    flex: 2;
-    text-align: right;
-    color: #555;
-  }
+      &:hover {
+        background: var(--color-primary-dark);
+        transform: scale(1.05);
+      }
+    }
 
-  input,
-  select {
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
-    font-size: 1.6rem;
-    font-family: inherit;
-    background-color: #f9f9f9;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    h3 {
+      font-size: 2.4rem;
 
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+      color: var(--text-primary);
     }
   }
-}
 
-.btnGroup {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
 
-.editBtn,
-.cancelBtn,
-.saveBtn {
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
+  .infoCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
 
-.editBtn {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 1.2rem 2rem;
 
-  &:hover {
-    background: #0056b3;
+    .infoCard {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+      border-radius: 12px;
+      min-height: 160px;
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+
+    .cardBackgroundIcon {
+      position: absolute;
+      bottom: -20px;
+      right: -15px;
+      font-size: 100px;
+      opacity: 0.15;
+      transform: rotate(-20deg);
+      color: white;
+      transition: transform 0.4s ease;
+    }
+
+    .infoCard:hover .cardBackgroundIcon {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+
+    .cardHeader {
+      .cardTitle {
+        font-size: 1.4rem;
+        font-weight: 600;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .cardBody {
+
+      text-align: left;
+      margin-top: 1rem;
+    }
+
+
+    .cardValue {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .cardSubValue {
+      font-size: 1.4rem;
+      font-weight: 500;
+      opacity: 0.85;
+      margin-top: 4px;
+      display: block;
+    }
+
+
+    .weatherInfo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+
+      .weatherInfoIcon {
+        font-size: 2.6rem;
+      }
+    }
+
+    .weatherCard {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+    }
+    .trafficCard {
+
+      background: linear-gradient(135deg, #ff8c00, #ffc107);
+    }
+    .alertCard {
+
+      background: linear-gradient(135deg, #dc3545, #ff6b6b);
+    }
   }
-}
 
-.cancelBtn {
-  background: #f5f5f5;
-  border: 1px solid #ccc;
+  .routeInfo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    background: var(--bg-subtle);
+    padding: 2rem;
+    border-radius: 0.8rem;
+    border: 1px solid var(--border-color);
 
-  &:hover {
-    background: #e0e0e0;
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      label {
+        font-weight: 600;
+        font-size: 1.6rem;
+        color: var(--text-secondary);
+      }
+
+      span, input {
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      input {
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 0.8rem 1.2rem;
+        transition: 0.2s;
+
+        &:focus {
+          border-color: var(--color-primary);
+          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+          outline: none;
+        }
+      }
+    }
   }
-}
 
-.saveBtn {
-  background: #28a745;
-  color: white;
-  border: none;
-
-  &:hover {
-    background: #218838;
-  }
-}
-
-input,
-select {
-  flex: 2;
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.bus-list {
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cột cố định */
-  grid-auto-rows: 1fr; /* các hàng cao bằng nhau */
-  gap: 10px;
-  max-width: 100%;
-  height: 130px; /* hoặc tùy bạn */
-  overflow-y: auto; /* cuộn dọc */
-  overflow-x: hidden;
-}
-
-.buses-choose {
-  position: relative;
-  background-color: #176fcd;
-  color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  text-align: center;
-  font-weight: 600;
-  width: 100%;
-  height: 4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .remove {
-    position: absolute;
+  .busSection {
     display: flex;
-    text-align: center;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    h5 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    select {
+      width: fit-content;
+      padding: 0.8rem 1.2rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        border-color: var(--color-primary);
+      }
+    }
+
+    .busList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem; // Tăng gap
+      margin-top: 0.5rem;
+
+      .busChip {
+        position: relative;
+        background: var(--color-primary);
+        color: white;
+        border-radius: 0.6rem;
+        padding: 1.2rem 1.6rem;
+        font-weight: 600;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+
+        &:hover {
+          transform: scale(1.05);
+          background: var(--color-primary-dark);
+        }
+
+        .remove {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: var(--color-danger);
+          color: white;
+          border-radius: 50%;
+          width: 2.2rem;
+          height: 2.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.4rem;
+          cursor: pointer;
+          transition: 0.2s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2); // Thêm shadow
+
+          &:hover {
+            background: var(--color-danger-dark);
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      .noBus {
+        color: var(--text-placeholder);
+        font-style: italic;
+      }
+    }
+  }
+
+
+  .btnGroup {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+
+    button {
+      border: none;
+      border-radius: 0.6rem;
+      padding: 1rem 2rem;
+      font-size: 1.4rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .editBtn {
+      background: var(--color-primary);
+      color: #fff;
+
+      &:hover {
+        background: var(--color-primary-dark);
+      }
+    }
+
+    .cancelBtn {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+
+      &:hover {
+        background: #e2e6ea;
+      }
+    }
+
+    .saveBtn {
+      background: var(--color-success);
+      color: #fff;
+
+      &:hover {
+        background: var(--color-success-dark);
+      }
+    }
+  }
+
+  .loading {
+    display: flex;
     justify-content: center;
     align-items: center;
-    top: -5px;
-    right: -5px;
-    width: 2rem;
-    height: 2rem;
-    background-color: rgb(228, 67, 67);
-    padding: 0.1rem;
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.1);
-      background-color: rgb(218, 13, 13);
-    }
+    height: 100%;
   }
 
   @keyframes slideInFromRight {
     from {
       transform: translateX(100%);
+      opacity: 0;
     }
     to {
       transform: translateX(0);
+      opacity: 1;
     }
   }
 }

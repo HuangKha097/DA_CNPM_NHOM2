@@ -64,17 +64,18 @@ const BusTab = () => {
             name="search"
             placeholder="Find bus"
           />
-
-          <Filter
-            firstTitle={'By bus number'}
-            secondTitle={'By route'}
-            ActiveFirstTitle={ActiveFirstTitle}
-            setActiveFirstTitle={setActiveFirstTitle}
-            ActiveSecondTitle={ActiveSecondTitle}
-            setActiveSecondTitle={setActiveSecondTitle}
-          />
+          <div className={cx('filter-wrapper')}>
+            <Filter
+              firstTitle={'By bus number'}
+              secondTitle={'By route'}
+              ActiveFirstTitle={ActiveFirstTitle}
+              setActiveFirstTitle={setActiveFirstTitle}
+              ActiveSecondTitle={ActiveSecondTitle}
+              setActiveSecondTitle={setActiveSecondTitle}
+            />{' '}
+          </div>
         </label>
-        <div className={cx('filter-wrapper')}></div>
+
         <div className={cx('bus-list')}>
           <BusList bus={bus} setBusDetail={setBusDetail} busDetail={busDetail} onClose={onClose} />
         </div>

@@ -77,10 +77,10 @@ const ScheduleTab = () => {
     }
   };
   const onClose = () => {
-    setIsShowDetail(true);
+    setIsShowDetail(pre => !pre);
   };
   return (
-    <div className={cx('tab-wrapper')}>
+    <div className={cx('tab-wrapper',{ 'detail-full-width': isShowDetail })}>
       <div className={cx('left-block')}>
         <label htmlFor="search" className={cx('search')}>
           <input
@@ -105,7 +105,7 @@ const ScheduleTab = () => {
 
       {isShowDetail && (
         <div className={cx('right-block')}>
-          <RouteDetail routeDetail={routeDetail} setRouteDetail={setRouteDetail} />
+          <RouteDetail routeDetail={routeDetail} setRouteDetail={setRouteDetail} onClose={onClose} />
         </div>
       )}
     </div>

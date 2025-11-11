@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import classNames from "classnames/bind";
 import styles from "../assets/css/common/Page.module.scss";
 import NavBar from "../components/NavBar";
@@ -13,6 +13,8 @@ import MessageTab from "../components/manager/MessageTab";
 
 const cx = classNames.bind(styles);
 const ManagerPage = ({ role, setRole, userName }) => {
+
+
     return (
         <div>
             <div className={cx("container")}>
@@ -30,7 +32,7 @@ const ManagerPage = ({ role, setRole, userName }) => {
                             <Route path="/driver" element={<DriverTab />} />
                             <Route path="/student" element={<StudentTab />} />
                             <Route path="/schedule" element={<ScheduleTab />} />
-                            <Route path="/tracking" element={<TrackingTab />}>
+                            <Route path="/tracking" element={<TrackingTab  />}>
                                 <Route path=":id" element={<TrackingTab />} />
                             </Route>
                             <Route
