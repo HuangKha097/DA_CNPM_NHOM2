@@ -1,10 +1,14 @@
+
 .studentDetailWrapper {
   width: 100%;
   padding: 20px;
-  background: #ffffff;
-  border: 1px solid #ddd;
+
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -18,7 +22,8 @@
     margin-bottom: 20px;
     font-size: 2.4rem;
     font-weight: 800;
-    color: #333;
+
+    color: var(--text-primary);
   }
 }
 
@@ -29,31 +34,34 @@
 
   .label {
     font-weight: 600;
-    color: #555;
+    color: var(--text-secondary);
     flex: 1;
   }
 
   .value {
     flex: 2;
     text-align: right;
-    color: #555;
+    color: var(--text-primary);
   }
 
   input,
   select {
     width: 50%;
     padding: 1rem;
-    border: 1px solid #dcdcdc;
+
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+
     border-radius: 6px;
     font-size: 1.6rem;
     font-family: inherit;
-    background-color: #f9f9f9;
     transition: border-color 0.2s, box-shadow 0.2s;
 
     &:focus {
       outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+      border-color: var(--accent-primary);
+      box-shadow: var(--accent-primary-shadow);
     }
   }
 }
@@ -72,43 +80,40 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  border: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .editBtn {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 1.2rem 2rem;
 
-  &:hover {
-    background: #0056b3;
-  }
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  padding: 1.2rem 2rem;
 }
 
 .cancelBtn {
-  background: #f5f5f5;
-  border: 1px solid #ccc;
 
-  &:hover {
-    background: #e0e0e0;
-  }
+  background: var(--button-neutral-bg);
+  border: 1px solid var(--button-neutral-border);
+  color: var(--button-neutral-text);
 }
 
 .saveBtn {
-  background: #28a745;
-  color: white;
-  border: none;
 
-  &:hover {
-    background: #218838;
+  background: var(--status-success-solid);
+  color: var(--text-on-solid-button);
+}
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-
-  @keyframes slideInFromRight {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(0);
-    }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }

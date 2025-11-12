@@ -1,37 +1,14 @@
-
 .ScheduleDetailWrapper {
-
-  --color-primary: #007bff;
-  --color-primary-dark: #0056b3;
-  --color-primary-light: #e6f2ff;
-
-  --color-success: #28a745;
-  --color-success-dark: #218838;
-
-  --color-danger: #dc3545;
-  --color-danger-dark: #c82333;
-  --color-danger-light: #fseedf;
-
-  --color-warning: #fd7e14;
-  --color-warning-light: #fff4e8;
-
-  --text-primary: #212529;
-  --text-secondary: #495057;
-  --text-placeholder: #6c757d;
-
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-subtle: #fafafa;
-  --border-color: #dee2e6;
-
-  /* Cài đặt gốc */
   width: 100%;
   height: 100%;
   padding: 2rem;
-  background: var(--bg-primary);
+
+
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -44,7 +21,6 @@
     gap: 1.5rem;
 
     .backBtn {
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,21 +30,22 @@
       font-size: 1.6rem;
       font-weight: 600;
       border-radius: 50%;
-      background: var(--color-primary);
-      color: white;
+
+      background: var(--accent-primary);
+      color: var(--text-on-accent);
+
       border: none;
       cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: opacity 0.2s ease, transform 0.2s ease;
 
       &:hover {
-        background: var(--color-primary-dark);
+        opacity: 0.85;
         transform: scale(1.05);
       }
     }
 
     h3 {
       font-size: 2.4rem;
-
       color: var(--text-primary);
     }
   }
@@ -78,7 +55,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-
 
     .infoCard {
       position: relative;
@@ -99,7 +75,6 @@
       }
     }
 
-
     .cardBackgroundIcon {
       position: absolute;
       bottom: -20px;
@@ -115,7 +90,6 @@
       transform: rotate(-10deg) scale(1.1);
     }
 
-
     .cardHeader {
       .cardTitle {
         font-size: 1.4rem;
@@ -126,11 +100,9 @@
     }
 
     .cardBody {
-
       text-align: left;
       margin-top: 1rem;
     }
-
 
     .cardValue {
       font-size: 2.8rem;
@@ -146,7 +118,6 @@
       display: block;
     }
 
-
     .weatherInfo {
       display: flex;
       align-items: center;
@@ -160,16 +131,15 @@
       }
     }
 
+
     .weatherCard {
-      background: linear-gradient(135deg, #007bff, #00c6ff);
+      background: var(--weather-card-bg);
     }
     .trafficCard {
-
-      background: linear-gradient(135deg, #ff8c00, #ffc107);
+      background: var(--traffic-card-bg);
     }
     .alertCard {
-
-      background: linear-gradient(135deg, #dc3545, #ff6b6b);
+      background: var(--alert-card-bg);
     }
   }
 
@@ -177,7 +147,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
-    background: var(--bg-subtle);
+
+    background: var(--input-bg);
+
     padding: 2rem;
     border-radius: 0.8rem;
     border: 1px solid var(--border-color);
@@ -201,13 +173,15 @@
 
       input {
         border: 1px solid var(--border-color);
+        background-color: var(--bg-secondary) ;
         border-radius: 6px;
         padding: 0.8rem 1.2rem;
         transition: 0.2s;
 
         &:focus {
-          border-color: var(--color-primary);
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+
+          border-color: var(--accent-primary);
+          box-shadow: var(--accent-primary-shadow);
           outline: none;
         }
       }
@@ -230,26 +204,31 @@
       padding: 0.8rem 1.2rem;
       border-radius: 6px;
       border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
+
+      background: var(--input-bg);
+      color: var(--text-primary);
+
       font-size: 1.4rem;
       cursor: pointer;
       transition: 0.2s;
 
       &:hover {
-        border-color: var(--color-primary);
+        border-color: var(--accent-primary);
       }
     }
 
     .busList {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem; // Tăng gap
+      gap: 1rem;
       margin-top: 0.5rem;
 
       .busChip {
         position: relative;
-        background: var(--color-primary);
-        color: white;
+
+        background: var(--accent-primary);
+        color: var(--text-on-accent);
+
         border-radius: 0.6rem;
         padding: 1.2rem 1.6rem;
         font-weight: 600;
@@ -257,19 +236,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.2s ease, background-color 0.2s ease;
+        transition: transform 0.2s ease, opacity 0.2s ease;
 
         &:hover {
           transform: scale(1.05);
-          background: var(--color-primary-dark);
+          opacity: 0.85;
         }
 
         .remove {
           position: absolute;
           top: -8px;
           right: -8px;
-          background: var(--color-danger);
-          color: white;
+
+          background: var(--status-danger-solid);
+          color: var(--text-on-solid-button);
+
           border-radius: 50%;
           width: 2.2rem;
           height: 2.2rem;
@@ -279,22 +260,21 @@
           font-size: 1.4rem;
           cursor: pointer;
           transition: 0.2s;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.2); // Thêm shadow
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 
           &:hover {
-            background: var(--color-danger-dark);
             transform: scale(1.1);
+            opacity: 0.85;
           }
         }
       }
 
       .noBus {
-        color: var(--text-placeholder);
+        color: var(--text-secondary);
         font-style: italic;
       }
     }
   }
-
 
   .btnGroup {
     display: flex;
@@ -315,31 +295,25 @@
     }
 
     .editBtn {
-      background: var(--color-primary);
-      color: #fff;
 
-      &:hover {
-        background: var(--color-primary-dark);
-      }
+      background: var(--accent-primary);
+      color: var(--text-on-accent);
+      &:hover { opacity: 0.85; }
     }
 
     .cancelBtn {
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
 
-      &:hover {
-        background: #e2e6ea;
-      }
+      background: var(--button-neutral-bg);
+      color: var(--button-neutral-text);
+      border: 1px solid var(--button-neutral-border);
+      &:hover { opacity: 0.85; }
     }
 
     .saveBtn {
-      background: var(--color-success);
-      color: #fff;
 
-      &:hover {
-        background: var(--color-success-dark);
-      }
+      background: var(--status-success-solid);
+      color: var(--text-on-solid-button);
+      &:hover { opacity: 0.85; }
     }
   }
 

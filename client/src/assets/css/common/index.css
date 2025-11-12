@@ -2,23 +2,133 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-:root {
+body.light {
+    --bg-primary: #f4f7f6;
+    --bg-secondary: #fAfAfA;
+    --bg-sidebar: #2d3748;
+    --sidebar-active: #4a5568;
+
+    --text-primary: #333333;
+    --text-secondary: #718096;
+    --text-on-sidebar: #ffffff;
+    --text-on-accent: #ffffff;
+
+    --border-color: #e2e8f0;
+
+    --accent-primary: #3182ce;
+    --status-success-text: #38a169;
+    --status-warning-text: #dd6b20;
+    --status-danger-text: #e53e3e;
+
+    --status-success-bg: #c6f6d5;
+    --status-warning-bg: #feebc8;
+    --status-danger-bg: #fed7d7;
+
+    --shadow-map: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+    rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+    --filter-tag-bg: #d5e8fd;
+    --filter-tag-text: #1a202c;
+    --filter-tag-bg-hover: #c7e0fc;
+    --filter-tag-active-bg: #5da9fa;
+    --filter-tag-active-text: #ffffff;
+    --filter-tag-active-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+
+    --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --input-bg: #f9f9f9;
+    --accent-primary-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    --button-neutral-bg: #f5f5f5;
+    --button-neutral-text: #333;
+    --button-neutral-border: #ccc;
+    --status-danger-solid: #c43131;
+    --status-success-solid: #28a745;
+    --text-on-solid-button: #ffffff;
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+
+    --toggle-bg: #E2E8F0;
+    --toggle-fg: #ffffff;
+
+    --table-header-bg: #f5f5f5;
+    --table-row-even-bg: #fafafa;
+    --table-row-hover-bg: #f1f9ff;
+    --status-success-border: #c3e6cb;
+    --status-warning-border: #ffeeba;
+    --status-danger-border: #f5c6cb;
+
+    --ai-btn-bg: #f0f7ff;
+    --ai-btn-border: #bce0ff;
+    --ai-btn-bg-hover: #e0f0ff;
+    --ai-btn-bg-active: #cce7ff;
+
+    --weather-card-bg: linear-gradient(135deg, #007bff, #00c6ff);
+    --traffic-card-bg: linear-gradient(135deg, #ff8c00, #ffc107);
+    --alert-card-bg: linear-gradient(135deg, #dc3545, #ff6b6b);
 }
 
-/* Common */
-button {
-}
+body.dark {
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --bg-sidebar: #2d3748;
+    --sidebar-active: #4a5568;
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* màu nền khớp theme */
-    -webkit-text-fill-color: #fff !important; /* chữ trắng */
-    caret-color: #fff; /* con trỏ gõ chữ cũng trắng */
-    transition: background-color 5000s ease-in-out 0s;
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --text-on-sidebar: #ffffff;
+    --text-on-accent: #1a202c;
+
+    --border-color: #4a5568;
+
+    --accent-primary: #63b3ed;
+    --status-success-text: #68d391;
+    --status-warning-text: #f6ad55;
+    --status-danger-text: #f56565;
+
+    --status-success-bg: #2f4a39;
+    --status-warning-bg: #4a3c2c;
+    --status-danger-bg: #4a2d2d;
+
+    --shadow-map: none;
+
+    --filter-tag-bg: var(--sidebar-active);
+    --filter-tag-text: var(--accent-primary);
+    --filter-tag-bg-hover: var(--text-secondary);
+    --filter-tag-active-bg: var(--accent-primary);
+    --filter-tag-active-text: var(--text-on-accent);
+    --filter-tag-active-shadow: 0 0 6px rgba(99, 179, 237, 0.5);
+
+    --shadow-card: none;
+    --input-bg: var(--sidebar-active);
+    --accent-primary-shadow: 0 0 0 2px rgba(99, 179, 237, 0.2);
+    --button-neutral-bg: var(--sidebar-active);
+    --button-neutral-text: var(--text-primary);
+    --button-neutral-border: var(--border-color);
+    --status-danger-solid: var(--status-danger-text);
+    --status-success-solid: var(--status-success-text);
+    --text-on-solid-button: #000000;
+    --modal-backdrop: rgba(0, 0, 0, 0.7);
+
+    --toggle-bg: #4A5568;
+    --toggle-fg: #363e4c;
+
+    --table-header-bg: var(--sidebar-active);
+    --table-row-even-bg: var(--bg-primary);
+    --table-row-hover-bg: var(--sidebar-active);
+    --status-success-border: var(--status-success-text);
+    --status-warning-border: var(--status-warning-text);
+    --status-danger-border: var(--status-danger-text);
+
+    --ai-btn-bg: var(--bg-secondary);
+    --ai-btn-border: var(--sidebar-active);
+    --ai-btn-bg-hover: var(--sidebar-active);
+    --ai-btn-bg-active: var(--border-color);
+
+    --weather-card-bg: var(--accent-primary);
+    --traffic-card-bg: var(--status-warning-text);
+    --alert-card-bg: var(--status-danger-text);
 }
 
 a {
@@ -30,7 +140,6 @@ li {
     list-style: none;
 }
 
-/*  */
 html {
     font-size: 62.5%;
 }
@@ -38,8 +147,86 @@ html {
 body {
     font-family: "Inter", sans-serif;
     font-size: 1.6rem;
-    background-color: #333;
+    line-height: 1.5;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.container {
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--bg-secondary) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    caret-color: var(--text-primary);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.sidebar {
+    background-color: var(--bg-sidebar);
+    color: var(--text-on-sidebar);
+}
+
+.sidebar-item.active {
+    background-color: var(--sidebar-active);
+}
+
+.table,
+.card,
+.detail-panel {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.page-title {
+    color: var(--text-primary);
+    font-size: 2.4rem;
+    font-weight: 600;
+}
+
+.label {
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+}
+
+.button-primary {
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.button-primary:hover {
+    opacity: 0.85;
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.status-tag.success {
+    background-color: var(--status-success-bg);
+    color: var(--status-success-text);
+}
+
+.status-tag.warning {
+    background-color: var(--status-warning-bg);
+    color: var(--status-warning-text);
+}
+
+.status-tag.danger {
+    background-color: var(--status-danger-bg);
+    color: var(--status-danger-text);
 }
