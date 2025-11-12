@@ -83,7 +83,7 @@ const StudentList = ({
       {isLoading ? (
         <div
           style={{
-            background: '#fff',
+            background: 'transparent',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

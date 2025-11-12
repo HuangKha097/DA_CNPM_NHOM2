@@ -16,7 +16,7 @@ const DriverList = ({ setDriverDetail, driverDetail, driver, onClose }) => {
       {loadingFetchAllDriver ? (
         <div
           style={{
-            background: '#fff',
+            background: 'transparent',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

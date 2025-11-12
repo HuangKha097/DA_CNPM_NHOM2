@@ -17,7 +17,7 @@ const RouteList = ({ searchValue, routeDetail, setRouteDetail, onClose }) => {
       {loadingFindRoutes ? (
         <div
           style={{
-            background: '#fff',
+            background: 'transparent',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

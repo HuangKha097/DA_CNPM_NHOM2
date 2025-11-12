@@ -15,7 +15,7 @@ const List = ({ bus, setBusDetail, busDetail, onClose }) => {
       {fetchAllLoading ? (
         <div
           style={{
-            background: '#fff',
+            background: 'transparent',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
