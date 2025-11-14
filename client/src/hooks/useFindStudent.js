@@ -11,7 +11,6 @@ const useFindStudent = (searchValue, setStudentPopUp, studentsSelected, valueFil
       valueFilter
         ? (res = await UserService.findStudentsByGrade(searchValue))
         : (res = await UserService.findStudentsByStudentNumber(searchValue));
-      console.log(res.students);
 
       const filterStudents = res.students.filter(
         (s) => !studentsSelected.some((sel) => sel._id === s._id)
