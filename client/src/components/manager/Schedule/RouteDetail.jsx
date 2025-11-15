@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../../assets/css/manager/ScheduleDetail.module.scss';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
-import * as BusController from '../../../controller/BusController';
-import * as RouteController from '../../../controller/RouteController';
 import useFetchAllBuses from '../../../hooks/useFetchAllBuses';
 import useRouteDistance from '../../../hooks/useRouteDistance';
 import useWeatherData from '../../../hooks/useWeatherData';
+import handleRemoveBus from '../../../hooks/useRemoveBusesForRoute.js';
+import useUpdateRoute from '../../../hooks/useUpdateRoute.js';
+
 import WeatherCard from './WeatherCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrafficLight, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -19,9 +20,7 @@ const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(routeDetail || {});
   const [busesChoose, setBusesChoose] = useState(routeDetail?.buses?.map((b) => b.busNumber) || []);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const {estimatedTime,distance} = useRouteDistance(routeDetail);
+  const { estimatedTime, distance } = useRouteDistance(routeDetail);
   const { weather, loading: isWeatherLoading } = useWeatherData(routeDetail);
   const { buses } = useFetchAllBuses();
   const remainingBuses = buses?.filter((b) => b.routeNumber === null) || [];
@@ -31,70 +30,13 @@ const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
     setBusesChoose(routeDetail?.buses?.map((b) => b.busNumber) || []);
   }, [routeDetail]);
 
-  //HANDLE FUNCTION
-  const handleUpdateRoute = async () => {
-    setIsLoading(true);
-    try {
-      const updatePayload = {
-        routeNumber: data.routeNumber,
-        time: data.time,
-        buses: busesChoose,
-      };
-
-      const res = await RouteController.updateRoute(updatePayload);
-      if (res?.success) {
-        // cập nhật từng xe bus
-        for (const busNumber of busesChoose) {
-          await BusController.updateBus({ busNumber, routeNumber: data.routeNumber });
-        }
-        setRouteDetail(res.data);
-        setData(res.data);
-        setBusesChoose(res.data.buses?.map((b) => b.busNumber) || []);
-        toast.success('Cập nhật tuyến xe buýt thành công!');
-      } else {
-        toast.error(res?.message || 'Cập nhật thất bại');
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error('Có lỗi xảy ra khi cập nhật tuyến.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRemoveBus = async (index) => {
-    const removedBus = busesChoose[index];
-    const updated = busesChoose.filter((_, i) => i !== index);
-    setBusesChoose(updated);
-
-    try {
-      const res = await RouteController.updateRoute({
-        routeNumber: data.routeNumber,
-        time: data.time,
-        buses: updated,
-      });
-
-      if (res?.success) {
-        await BusController.updateBus({ busNumber: removedBus, routeNumber: null });
-        for (const busNumber of updated) {
-          await BusController.updateBus({ busNumber, routeNumber: data.routeNumber });
-        }
-        toast.success(`Đã xoá xe ${removedBus} khỏi tuyến!`);
-      } else {
-        toast.error('Cập nhật thất bại.');
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error('Lỗi khi cập nhật tuyến.');
-    }
-  };
-
+  const {loading: updateRouteLoading, handleUpdateRoute} = useUpdateRoute(data, busesChoose, setRouteDetail, setData, setBusesChoose);
   const handleSave = () => {
     handleUpdateRoute();
     setIsEditing(false);
   };
 
-  if (isLoading)
+  if (updateRouteLoading)
     return (
       <div className={cx('loading')}>
         <ThreeDots visible height="80" width="80" color="#007bff" ariaLabel="three-dots-loading" />
@@ -154,8 +96,7 @@ const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
         <div>
           <label> Estimated Time</label>
 
-            <span>{caculatorTime(estimatedTime)}</span>
-
+          <span>{caculatorTime(estimatedTime)}</span>
         </div>
       </div>
 
@@ -181,11 +122,14 @@ const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
 
         <div className={cx('busList')}>
           {busesChoose.length > 0 ? (
-            busesChoose.map((bus, i) => (
-              <span key={i} className={cx('busChip')}>
+            busesChoose.map((bus, index) => (
+              <span key={index} className={cx('busChip')}>
                 {bus}
                 {isEditing && (
-                  <div className={cx('remove')} onClick={() => handleRemoveBus(i)}>
+                  <div
+                    className={cx('remove')}
+                    onClick={() => handleRemoveBus(index, busesChoose, setBusesChoose, data)}
+                  >
                     &times;
                   </div>
                 )}
@@ -206,12 +150,12 @@ const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
                 setIsEditing(false);
                 setBusesChoose(routeDetail?.buses?.map((b) => b.busNumber) || []);
               }}
-              disabled={isLoading}
+              disabled={updateRouteLoading}
             >
               Hủy
             </button>
-            <button className={cx('saveBtn')} onClick={handleSave} disabled={isLoading}>
-              {isLoading ? 'Đang lưu...' : 'Lưu'}
+            <button className={cx('saveBtn')} onClick={handleSave} disabled={updateRouteLoading}>
+              {updateRouteLoading ? 'Đang lưu...' : 'Lưu'}
             </button>
           </>
         ) : (

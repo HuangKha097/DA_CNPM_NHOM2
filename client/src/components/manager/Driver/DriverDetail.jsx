@@ -10,7 +10,6 @@ const cx = classNames.bind(styles);
 const DriverDetail = ({ driverDetail, setDriverDetail }) => {
   const [driverUpdate, setDriverUpdate] = useState(driverDetail || {});
 
-  console.log(driverDetail._id);
   const {
     isEditing,
     setIsEditing,

@@ -134,6 +134,7 @@ export const getUserByRole = async (req, res) => {
     }
 };
 
+
 export const getUserById = async (req, res) => {
     try {
         const { userId } = req.query;
