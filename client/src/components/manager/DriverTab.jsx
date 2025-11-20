@@ -5,6 +5,7 @@ import DriverDetail from '../manager/Driver/DriverDetail';
 import DriverList from '../manager/Driver/DriverList';
 
 import * as UserController from '../../controller/UserController';
+import { useStore } from '../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
@@ -12,20 +13,10 @@ const DriverTab = () => {
   const [ActiveFirstTitle, setActiveFirstTitle] = useState(false);
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  console.log(searchValue);
 
-  const [driver, setDriver] = useState(null); // driver tìm được
-  const [driverDetail, setDriverDetail] = useState({
-    _id: '',
-    driverNumber: '',
-    fullName: '',
-    phone: '',
-    licenseNumber: '',
-    licenseClass: '',
-    status: '',
-    assignedBus: '',
-  });
-  console.log(driverDetail);
+  const { driverDetail, setDriverDetail } = useStore();
+
+  const [driver, setDriver] = useState(null);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -93,17 +84,12 @@ const DriverTab = () => {
           /> */}
         </div>
         <div className={cx('bus-list')}>
-          <DriverList
-            driver={driver}
-            setDriverDetail={setDriverDetail}
-            driverDetail={driverDetail}
-            onClose={onClose}
-          />
+          <DriverList driver={driver} onClose={onClose} />
         </div>
       </div>
       {isShowDetail && (
         <div className={cx('right-block')}>
-          <DriverDetail driverDetail={driverDetail} setDriverDetail={setDriverDetail} />
+          <DriverDetail/>
         </div>
       )}
     </div>

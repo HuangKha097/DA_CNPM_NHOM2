@@ -13,24 +13,31 @@ import WeatherCard from './WeatherCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrafficLight, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { caculatorTime } from '../../../hooks/useAPI.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const RouteDetail = ({ routeDetail, setRouteDetail, onClose }) => {
+const RouteDetail = ({ onClose }) => {
+  const { routeDetail } = useStore();
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(routeDetail || {});
   const [busesChoose, setBusesChoose] = useState(routeDetail?.buses?.map((b) => b.busNumber) || []);
   const { estimatedTime, distance } = useRouteDistance(routeDetail);
   const { weather, loading: isWeatherLoading } = useWeatherData(routeDetail);
   const { buses } = useFetchAllBuses();
-  const remainingBuses = buses?.filter((b) => b.routeNumber === null) || [];
+  const remainingBuses = buses?.data?.filter((b) => b.routeNumber === null) || [];
 
   useEffect(() => {
     setData(routeDetail || {});
     setBusesChoose(routeDetail?.buses?.map((b) => b.busNumber) || []);
   }, [routeDetail]);
 
-  const {loading: updateRouteLoading, handleUpdateRoute} = useUpdateRoute(data, busesChoose, setRouteDetail, setData, setBusesChoose);
+  const { loading: updateRouteLoading, handleUpdateRoute } = useUpdateRoute(
+    data,
+    busesChoose,
+    setData,
+    setBusesChoose
+  );
   const handleSave = () => {
     handleUpdateRoute();
     setIsEditing(false);

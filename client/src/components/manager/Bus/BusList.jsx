@@ -3,16 +3,18 @@ import classNames from 'classnames/bind';
 import styles from '../../../assets/css/manager/BusList.module.scss';
 import { ThreeDots } from 'react-loader-spinner';
 import useFetchAllBuses from '../../../hooks/useFetchAllBuses.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const List = ({ bus, setBusDetail, busDetail, onClose }) => {
-  const { buses, loading: fetchAllLoading } = useFetchAllBuses(busDetail);
-  const displayBuses = bus ? [bus] : buses;
+const List = ({ bus, onClose }) => {
+  const {busDetail, setBusDetail} = useStore();
+  const { buses } = useFetchAllBuses(busDetail);
+  const displayBuses = bus ? [bus] : buses?.data;
 
   return (
     <div className={cx('tableWrapper')}>
-      {fetchAllLoading ? (
+      {buses.loading ? (
         <div
           style={{
             background: 'transparent',
@@ -30,7 +32,7 @@ const List = ({ bus, setBusDetail, busDetail, onClose }) => {
             ariaLabel="three-dots-loading"
           />
         </div>
-      ) : displayBuses.length > 0 ? (
+      ) : displayBuses?.length > 0 ? (
         <table className={cx('table')}>
           <thead>
             <tr>
@@ -47,18 +49,8 @@ const List = ({ bus, setBusDetail, busDetail, onClose }) => {
                 onClick={() => {
                   onClose();
                   setBusDetail({
-                    _id: item._id,
-                    busNumber: item.busNumber,
-                    driver: item.driver,
-                    licensePlate: item.licensePlate,
-                    routeNumber: item.routeNumber,
-                    busStatus: item.busStatus,
-                    capacity: item.capacity || 0,
-                    currentStudents: item.student || 0,
-                    lastUpdate: '',
-                    students: item.students || [],
+                    ...item,
                   });
-
                 }}
               >
                 <td>{item.busNumber}</td>

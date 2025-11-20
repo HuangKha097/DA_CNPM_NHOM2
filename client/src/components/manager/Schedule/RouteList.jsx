@@ -3,13 +3,15 @@ import classNames from 'classnames/bind';
 import styles from '../../../assets/css/manager/ScheduleList.module.scss';
 import { ThreeDots } from 'react-loader-spinner';
 import useFetchRouteByNumber from '../../../hooks/useFetchRouteByNumber.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const RouteList = ({ searchValue, routeDetail, setRouteDetail, onClose }) => {
+const RouteList = ({ searchValue, onClose }) => {
+  const {setRouteDetail } = useStore();
   const { routes, loading: loadingFindRoutes } = useFetchRouteByNumber({
     searchValue,
-    routeDetail,
+
   });
 
   return (
@@ -50,6 +52,7 @@ const RouteList = ({ searchValue, routeDetail, setRouteDetail, onClose }) => {
                   onClick={() => {
                     onClose();
                     setRouteDetail({ ...route });
+
                   }}
                   className={cx('row')}
                 >

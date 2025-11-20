@@ -6,24 +6,16 @@ import RouteDetail from './Schedule/RouteDetail';
 import RouteList from './Schedule/RouteList.jsx';
 
 import * as RouteController from '../../controller/RouteController.js';
+import useStore from '../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
 const ScheduleTab = () => {
   const [isShowDetail, setIsShowDetail] = useState(false);
-  const [ActiveFirstTitle, setActiveFirstTitle] = useState(false);
+
   const [searchValue, setSearchValue] = useState('');
-  const [route, setRoute] = useState(null); // route tìm được
-  const [routeDetail, setRouteDetail] = useState({
-    _id: '',
-    routeNumber: '',
-    name: '',
-    startLocation: '',
-    endLocation: '',
-    totalDistance: '',
-    totalTime: '',
-    status: '',
-  });
+  const [route, setRoute] = useState(null);
+  const { routeDetail, setRouteDetail } = useStore();
 
   console.log('searchValue:', searchValue);
   console.log('routeDetail:', routeDetail);
@@ -60,14 +52,7 @@ const ScheduleTab = () => {
 
         setRoute(foundRoute);
         setRouteDetail({
-          _id: foundRoute?._id,
-          routeNumber: foundRoute?.routeNumber,
-          name: foundRoute?.name,
-          startLocation: foundRoute?.startLocation,
-          endLocation: foundRoute?.endLocation,
-          totalDistance: foundRoute?.totalDistance,
-          totalTime: foundRoute?.totalTime,
-          status: foundRoute?.status,
+          ...foundRoute,
         });
       } else {
         setRoute(null);
@@ -77,10 +62,10 @@ const ScheduleTab = () => {
     }
   };
   const onClose = () => {
-    setIsShowDetail(pre => !pre);
+    setIsShowDetail((pre) => !pre);
   };
   return (
-    <div className={cx('tab-wrapper',{ 'detail-full-width': isShowDetail })}>
+    <div className={cx('tab-wrapper', { 'detail-full-width': isShowDetail })}>
       <div className={cx('left-block')}>
         <label htmlFor="search" className={cx('search')}>
           <input
@@ -94,18 +79,13 @@ const ScheduleTab = () => {
         </label>
         <div className={cx('filter-wrapper')}></div>
         <div className={cx('bus-list')}>
-          <RouteList
-            searchValue={searchValue}
-            routeDetail={routeDetail}
-            setRouteDetail={setRouteDetail}
-            onClose={onClose}
-          />
+          <RouteList searchValue={searchValue} onClose={onClose} />
         </div>
       </div>
 
       {isShowDetail && (
         <div className={cx('right-block')}>
-          <RouteDetail routeDetail={routeDetail} setRouteDetail={setRouteDetail} onClose={onClose} />
+          <RouteDetail onClose={onClose} />
         </div>
       )}
     </div>

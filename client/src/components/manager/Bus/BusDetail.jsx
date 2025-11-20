@@ -16,10 +16,12 @@ import useUpdateBus from '../../../hooks/useUpdateBus.js';
 import useResetBus from '../../../hooks/useResetBus.js';
 import useFindStudent from '../../../hooks/useFindStudent.js';
 import useOpenPopupStudent from '../../../hooks/useOpenPopupStudent.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const BusDetail = ({ busDetail, setBusDetail }) => {
+const BusDetail = () => {
+  const {busDetail, setBusDetail} = useStore();
   //   Search state
   const [searchValue, setSearchValue] = useState('');
 
@@ -94,6 +96,7 @@ const BusDetail = ({ busDetail, setBusDetail }) => {
       ...busDetail,
       driver: busDetail.driver?._id || busDetail.driver || null,
       students: busDetail.students || [],
+
     });
 
     // Reset state khi chọn một bus khác

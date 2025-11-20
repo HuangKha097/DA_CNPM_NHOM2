@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../assets/css/manager/MessageTab.module.scss';
 import { jwtDecode } from 'jwt-decode';
 import * as UserService from '../../service/UserService.js';
 import { handleAiGenerate } from '../../hooks/useAPI.js';
+import useStore from '../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 const API_KEY = import.meta.env.VITE_OPENROUTER_KEY;
 
 const MessageTab = () => {
   const token = localStorage.getItem('token');
-  const [messageType, setMessageType] = useState('');
-  const [targetRole, setTargetRole] = useState('');
-  const [targetRecipient, setTargetRecipient] = useState('');
-  const [customMessage, setCustomMessage] = useState('');
-  const [recipientList, setRecipientList] = useState([]);
-  const [historyMessage, setHistoryMessage] = useState([]);
-  const [isAiLoading, setIsAiLoading] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [aiError, setAiError] = useState(null);
-  const [sendError, setSendError] = useState(null);
 
+
+  const {
+    messageType,
+    targetRole,
+    targetRecipient,
+    customMessage,
+    recipientList,
+    historyMessage,
+    isAiLoading,
+    isSending,
+    aiError,
+    sendError,
+    // Actions
+    setMessageState,
+    setHistoryMessage,
+    resetMessageForm,
+  } = useStore();
+
+  // fetch lịch sử tin nhắn
   useEffect(() => {
     const fetchHistoryMessage = async () => {
       try {
@@ -36,34 +46,39 @@ const MessageTab = () => {
       }
     };
     fetchHistoryMessage();
-  }, []);
+  }, [token, setHistoryMessage]);
 
+  // fetch danh sách người nhận khi targetRole thay đổi
   useEffect(() => {
     const fetchRecipients = async () => {
       if (targetRole === 'parent' || targetRole === 'driver') {
         try {
           const res = await UserService.getUserByRole(targetRole);
-          setRecipientList(res?.data || []);
+          setMessageState({ recipientList: res?.data || [] });
         } catch (error) {
           console.error('Lỗi lấy danh sách người dùng:', error);
-          setRecipientList([]);
+          setMessageState({ recipientList: [] });
         }
       } else {
-        setRecipientList([]);
+        setMessageState({ recipientList: [] });
       }
     };
-    fetchRecipients();
-    setTargetRecipient('');
-  }, [targetRole]);
 
+    fetchRecipients();
+    // reset targetRecipient khi đổi role
+    setMessageState({ targetRecipient: '' });
+  }, [targetRole, setMessageState]);
+
+  // xử lý gửi tin nhắn
   const handleSend = async (e) => {
     e.preventDefault();
-    setIsSending(true);
-    setSendError(null);
+    setMessageState({ isSending: true, sendError: null });
 
     if (!messageType || !targetRole || !customMessage.trim()) {
-      setSendError('Vui lòng nhập đầy đủ thông tin trước khi gửi.');
-      setIsSending(false);
+      setMessageState({
+        sendError: 'Vui lòng nhập đầy đủ thông tin trước khi gửi.',
+        isSending: false,
+      });
       return;
     }
 
@@ -94,23 +109,23 @@ const MessageTab = () => {
 
       if (res?.success) {
         alert(res.message || 'Tin nhắn đã được gửi!');
-        setCustomMessage('');
-        setMessageType('');
-        setTargetRole('');
-        setTargetRecipient('');
+        resetMessageForm();
+
+        // cập nhật lại lịch sử ngay lập tức
         const updatedHistory = await UserService.getMessageHistory(senderId);
         if (updatedHistory.success) setHistoryMessage(updatedHistory.data);
       } else {
-        setSendError(res.message || 'Lỗi khi gửi tin nhắn.');
+        setMessageState({ sendError: res.message || 'Lỗi khi gửi tin nhắn.' });
       }
     } catch (error) {
       console.error('Gửi tin nhắn thất bại:', error);
-      setSendError(error.message || 'Không thể gửi tin nhắn.');
+      setMessageState({ sendError: error.message || 'Không thể gửi tin nhắn.' });
     } finally {
-      setIsSending(false);
+      setMessageState({ isSending: false });
     }
   };
 
+  //xử lý xóa tin nhắn
   const handleDeleteMessage = async (messageId) => {
     if (!token) return alert('Bạn chưa đăng nhập!');
     if (!window.confirm('Bạn có chắc muốn xóa tin nhắn này không?')) return;
@@ -120,7 +135,8 @@ const MessageTab = () => {
       const res = await UserService.deleteMessage(userId, messageId);
       if (res?.success) {
         alert('Xóa tin nhắn thành công!');
-        setHistoryMessage((prev) => prev.filter((msg) => msg._id !== messageId));
+
+        setHistoryMessage(historyMessage.filter((msg) => msg._id !== messageId));
       } else {
         alert(res?.message || 'Không thể xóa tin nhắn!');
       }
@@ -128,6 +144,15 @@ const MessageTab = () => {
       console.error('Delete message error:', error);
       alert('Có lỗi xảy ra khi xóa tin nhắn.');
     }
+  };
+
+
+  const callAiGenerate = () => {
+    handleAiGenerate({
+      setCustomMessage: (val) => setMessageState({ customMessage: val }),
+      setAiError: (val) => setMessageState({ aiError: val }),
+      setIsAiLoading: (val) => setMessageState({ isAiLoading: val }),
+    });
   };
 
   return (
@@ -182,7 +207,7 @@ const MessageTab = () => {
               <select
                 id="messageType"
                 value={messageType}
-                onChange={(e) => setMessageType(e.target.value)}
+                onChange={(e) => setMessageState({ messageType: e.target.value })}
                 required
               >
                 <option value="">-- Chọn loại thông báo --</option>
@@ -199,7 +224,7 @@ const MessageTab = () => {
               <select
                 id="targetRole"
                 value={targetRole}
-                onChange={(e) => setTargetRole(e.target.value)}
+                onChange={(e) => setMessageState({ targetRole: e.target.value })}
                 required
               >
                 <option value="">-- Chọn đối tượng --</option>
@@ -216,7 +241,7 @@ const MessageTab = () => {
                 <select
                   id="targetRecipient"
                   value={targetRecipient}
-                  onChange={(e) => setTargetRecipient(e.target.value)}
+                  onChange={(e) => setMessageState({ targetRecipient: e.target.value })}
                   required
                 >
                   <option value="">-- Chọn người nhận --</option>
@@ -243,13 +268,7 @@ const MessageTab = () => {
               <button
                 type="button"
                 className={cx('ai-btn')}
-                onClick={() =>
-                  handleAiGenerate({
-                    setCustomMessage,
-                    setAiError,
-                    setIsAiLoading,
-                  })
-                }
+                onClick={callAiGenerate}
                 disabled={isAiLoading || !API_KEY}
               >
                 {isAiLoading ? 'Đang tạo...' : 'Tạo nội dung tự động (AI)'}
@@ -257,7 +276,7 @@ const MessageTab = () => {
               {aiError && <span className={cx('error-text')}>{aiError}</span>}
               <textarea
                 value={customMessage}
-                onChange={(e) => setCustomMessage(e.target.value)}
+                onChange={(e) => setMessageState({ customMessage: e.target.value })}
                 placeholder="Nhập nội dung tin nhắn hoặc dùng AI để gợi ý..."
                 rows={5}
                 required

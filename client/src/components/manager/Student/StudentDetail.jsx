@@ -4,10 +4,13 @@ import styles from "../../../assets/css/manager/StudentDetail.module.scss";
 import * as UserController from "../../../controller/UserController";
 import toast, { Toaster } from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
+import { useStore } from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const StudentDetail = ({ studentDetail, setStudentDetail }) => {
+const StudentDetail = () => {
+
+  const { studentDetail, setStudentDetail } = useStore();
   const [isEditing, setIsEditing] = useState(false);
   const [studentUpdate, setStudentUpdate] = useState(studentDetail || {});
   const [isLoading, setIsLoading] = useState(false);

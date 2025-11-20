@@ -3,17 +3,20 @@ import classNames from 'classnames/bind';
 import styles from '../../../assets/css/manager/DriverList.module.scss';
 import { ThreeDots } from 'react-loader-spinner';
 import useFetchAllDrivers from '../../../hooks/useFetchAllDrivers.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const DriverList = ({ setDriverDetail, driverDetail, driver, onClose }) => {
-  const { loading: loadingFetchAllDriver, drivers } = useFetchAllDrivers(driverDetail);
+const DriverList = ({driver, onClose }) => {
+  const {driverDetail, setDriverDetail} = useStore();
+  const { drivers } = useFetchAllDrivers(driverDetail);
+  console.log(driverDetail);
 
-  const displayDriver = driver ? [driver] : drivers;
+  const displayDriver = driver ? [driver] : drivers?.data;
 
   return (
     <div className={cx('tableWrapper')}>
-      {loadingFetchAllDriver ? (
+      {drivers.loading ? (
         <div
           style={{
             background: 'transparent',
@@ -31,7 +34,7 @@ const DriverList = ({ setDriverDetail, driverDetail, driver, onClose }) => {
             ariaLabel="three-dots-loading"
           />
         </div>
-      ) : displayDriver.length > 0 ? (
+      ) : displayDriver?.length > 0 ? (
         <table className={cx('table')}>
           <thead>
             <tr>
@@ -48,13 +51,11 @@ const DriverList = ({ setDriverDetail, driverDetail, driver, onClose }) => {
                 onClick={() => {
                   onClose();
                   setDriverDetail({
-                    _id: item?._id,
+                    ...item,
                     driverNumber: item?.driverInfo?.driverNumber,
-                    fullName: item?.fullName,
-                    phone: item?.phone,
                     licenseNumber: item?.driverInfo?.licenseNumber,
                     licenseClass: item?.driverInfo?.licenseClass,
-                    assignedBus: item?.driverInfo?.assignedBus?.map((bus) => bus.busNumber) || [],
+                    assignedBus: item?.driverInfo?.assignedBus?.map((bus) => bus?.busNumber ) || [] ,
                     status: item?.driverInfo?.status,
                   });
                 }}

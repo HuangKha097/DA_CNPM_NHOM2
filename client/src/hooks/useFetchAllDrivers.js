@@ -1,24 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import * as UserService from '../service/UserService.js';
+import { dataReducer } from '../contexts/reducer.js';
+import { useRefreshing } from '../contexts/RefreshingContext.jsx';
 
-const UseFetchAllDrivers = (driverDetail) => {
-  const [drivers, setDrivers] = useState([]);
-  const [loading, setLoading] = useState(true);
+const UseFetchAllDrivers = () => {
+  const [drivers, driversDispatch]= useReducer(dataReducer, [])
+  const {refreshing} = useRefreshing()
 
   useEffect(() => {
     (async () => {
       try {
-        const drivers = await UserService.getUserByRole('driver');
-        setDrivers(drivers?.data || []);
+        driversDispatch({
+          type: 'GET_DATA_REQUEST',
+        })
+        const response = await UserService.getUserByRole('driver');
+        driversDispatch({
+          type: 'GET_DATA_SUCCESS',
+          data: response?.data || []
+        })
       } catch (error) {
         console.error('Lỗi khi tải danh sách tài xế:', error);
-      } finally {
-        setLoading(false); // tắt loading
+        driversDispatch({
+          type: 'GET_DATA_FAILURE',
+          error: error
+        })
       }
     })();
-  }, [driverDetail]);
+  }, [refreshing]);
 
-  return { loading, drivers };
+  return { drivers  };
 };
 
 export default UseFetchAllDrivers;

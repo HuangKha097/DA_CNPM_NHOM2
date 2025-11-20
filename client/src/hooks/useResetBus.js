@@ -4,10 +4,16 @@ import * as BusService from '../service/BusService.js';
 import * as UserService from '../service/UserService.js';
 
 import toast from 'react-hot-toast';
+import { useRefreshing } from '../contexts/RefreshingContext.jsx';
 
 const useResetBus = (driverId, busUpdate, setBusUpdate, busDetail, setBusDetail, setIsEditing) => {
   const [loading, setLoading] = useState(false);
+
+  const {refreshingDispatch} = useRefreshing()
   const handleReset = async () => {
+    refreshingDispatch({
+      type: "UPDATE_DATA"
+    })
     setLoading(true);
     const route = await RouteService.getRouteByRouteNumber(busDetail?.routeNumber);
     console.log(route);
@@ -21,6 +27,7 @@ const useResetBus = (driverId, busUpdate, setBusUpdate, busDetail, setBusDetail,
         busStatus: 'Dừng',
         driver: null,
         students: [],
+        lastUpdate: Date.now()
       };
 
       setBusUpdate(resetData);
@@ -62,7 +69,11 @@ const useResetBus = (driverId, busUpdate, setBusUpdate, busDetail, setBusDetail,
       console.error(error);
       toast.error('Có lỗi xảy ra khi reset!');
     } finally {
+
       setLoading(false);
+      refreshingDispatch({
+        type: "DONE_UPDATE_DATA"
+      })
     }
   };
 

@@ -4,10 +4,13 @@ import styles from '../../../assets/css/manager/DriverDetail.module.scss';
 import { Toaster } from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
 import useUpdateDriver from '../../../hooks/useUpdateDriver.js';
+import useStore from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
-const DriverDetail = ({ driverDetail, setDriverDetail }) => {
+const DriverDetail = () => {
+
+  const {driverDetail, setDriverDetail} = useStore();
   const [driverUpdate, setDriverUpdate] = useState(driverDetail || {});
 
   const {
@@ -54,10 +57,7 @@ const DriverDetail = ({ driverDetail, setDriverDetail }) => {
               <span className={cx('value')}>{driverUpdate.driverNumber}</span>
             </div>
 
-            <div className={cx('row')}>
-              <span className={cx('label')}>Last Update:</span>
-              <span className={cx('value')}>{driverUpdate.lastUpdate}</span>
-            </div>
+
 
             <div className={cx('row')}>
               <span className={cx('label')}>Name:</span>

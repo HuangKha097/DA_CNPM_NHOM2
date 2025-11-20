@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import * as RouteService from '../service/RouteService.js';
 import * as BusService from '../service/BusService.js';
 import toast from 'react-hot-toast';
+import useStore from '../zustand/store.js';
 
-const UseUpdateRoute = (data, busesChoose, setRouteDetail, setData, setBusesChoose) => {
+const UseUpdateRoute = (data, busesChoose,setData, setBusesChoose) => {
+  const {setRouteDetail} = useStore();
   const [loading , setLoading] = useState(false)
   const handleUpdateRoute = async () => {
     setLoading(true);

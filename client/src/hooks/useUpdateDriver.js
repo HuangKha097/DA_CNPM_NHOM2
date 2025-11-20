@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import * as UserService from '../service/UserService.js';
 import toast from 'react-hot-toast';
+import { useRefreshing } from '../contexts/RefreshingContext.jsx';
 
 const useUpdateDriver = (userId, setDriverDetail, driverUpdate, setDriverUpdate) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { refreshingDispatch } = useRefreshing()
+
+
   const handleUpdateDriver = async () => {
     try {
-      console.log(driverUpdate);
-      console.log(userId);
+      refreshingDispatch({
+        type:"UPDATE_DATA"
+      })
       setLoading(true);
       const res = await UserService.updateDriverInfo(userId, driverUpdate);
       console.log(res);
@@ -26,6 +31,9 @@ const useUpdateDriver = (userId, setDriverDetail, driverUpdate, setDriverUpdate)
       toast.error('Có lỗi xảy ra khi cập nhật');
     } finally {
       setLoading(false);
+      refreshingDispatch({
+        type:"DONE_UPDATE_DATA"
+      })
     }
   };
 

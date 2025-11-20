@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React  from "react";
 import classNames from "classnames/bind";
 import styles from "../assets/css/common/NavBar.module.scss";
 import avatar from "../assets/avatar_icon.png";

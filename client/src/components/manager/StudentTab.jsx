@@ -6,6 +6,7 @@ import StudentDetail from './Student/StudentDetail';
 import * as UserController from '../../controller/UserController';
 import Filter from '../Filter.jsx';
 
+
 const cx = classNames.bind(styles);
 
 const StudentTab = () => {
@@ -13,19 +14,7 @@ const StudentTab = () => {
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [student, setStudent] = useState(null);
-  const [studentDetail, setStudentDetail] = useState({
-    _id: '',
-    studentNumber: '',
-    parentId: '',
-    fullName: '',
-    className: '',
-    status: '',
-    parentName: '',
-    parentPhone: '',
-    registeredBus: '',
-  });
-  console.log(searchValue);
-  console.log(studentDetail);
+
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -86,15 +75,14 @@ const StudentTab = () => {
         <div className={cx('bus-list')}>
           <StudentList
             student={student}
-            setStudentDetail={setStudentDetail}
-            studentDetail={studentDetail}
+
             onClose={onClose}
           />
         </div>
       </div>
       {isShowDetail && (
         <div className={cx('right-block')}>
-          <StudentDetail studentDetail={studentDetail} setStudentDetail={setStudentDetail} />
+          <StudentDetail  />
         </div>
       )}
     </div>

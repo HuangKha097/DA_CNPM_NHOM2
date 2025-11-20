@@ -5,6 +5,7 @@ const busSchema = new mongoose.Schema({
   licensePlate: { type: String, required: true }, // Biển số
   capacity: { type: Number, default: 40 },
   routeNumber: { type: String },
+  lastUpdate: { type: Date },
   busStatus: {
     type: String,
     enum: ["Đang chạy", "Bảo trì", "Dừng"],

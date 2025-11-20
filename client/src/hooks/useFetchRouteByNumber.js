@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import * as RouteController from '../controller/RouteController.js';
+import useStore from '../zustand/store.js';
 
-const UseFetchRouteByNumber = ({ searchValue, routeDetail }) => {
+const UseFetchRouteByNumber = ({ searchValue }) => {
+  const { routeDetail} = useStore()
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -3,15 +3,20 @@ import toast from 'react-hot-toast';
 
 import * as UserService from '../service/UserService.js';
 import * as BusService from '../service/BusService.js';
+import { useRefreshing } from '../contexts/RefreshingContext.jsx';
 
 const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing) => {
   const [loading, setLoading] = useState(false);
+  const {  refreshingDispatch} = useRefreshing()
+
 
   const handleSave = async () => {
     try {
+      refreshingDispatch({
+        type:"UPDATE_DATA"
+      })
       setLoading(true);
       const driver = await UserService.getUserById(driverId);
-      console.log(driver?.data?.[0]);
       const currentAssignedBus = driver?.data?.[0]?.driverInfo?.assignedBus || [];
       if (driverId) {
         const activeBus = currentAssignedBus.find((bus) => bus.busStatus === 'Đang chạy');
@@ -29,7 +34,7 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
         }
       }
 
-      const res = await BusService.updateBus(busUpdate);
+      const res = await BusService.updateBus({ ...busUpdate, lastUpdate: Date.now() });
 
       if (res?.success) {
         if (driverId) {
@@ -82,6 +87,9 @@ const useUpdateBus = (driverId, busUpdate, busDetail, setBusDetail, setIsEditing
       toast.error('Có lỗi xảy ra khi cập nhật');
     } finally {
       setLoading(false);
+      refreshingDispatch({
+        type:"DONE_UPDATE_DATA"
+      })
     }
   };
 

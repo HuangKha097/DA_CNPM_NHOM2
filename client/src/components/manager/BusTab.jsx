@@ -5,7 +5,8 @@ import BusList from '../manager/Bus/BusList';
 import BusDetail from '../manager/Bus/BusDetail';
 import Filter from '../Filter.jsx';
 
-import * as BusController from '../../controller/BusController';
+import { UseSearchBus } from '../../hooks/useSearchBus.js';
+import useStore from '../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
@@ -17,24 +18,13 @@ const BusTab = () => {
   const [valueSearch, setValueSearch] = useState('');
   const [bus, setBus] = useState(null);
 
-  const [busDetail, setBusDetail] = useState({
-    _id: '',
-    driver: {},
-    routeNumber: '',
-    licensePlate: '',
-    busStatus: '',
-    capacity: 0,
-    currentStudents: 0,
-    lastUpdate: '',
-    students: [],
-  });
+  const {busDetail} = useStore();
   console.log('busDetail :', busDetail);
 
   const handleSearchBus = async () => {
-    const response = await BusController.searchBus(ActiveSecondTitle, valueSearch);
+    const response = await UseSearchBus(ActiveSecondTitle, valueSearch);
     setBus(response);
   };
-
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearchBus();
@@ -77,12 +67,12 @@ const BusTab = () => {
         </label>
 
         <div className={cx('bus-list')}>
-          <BusList bus={bus} setBusDetail={setBusDetail} busDetail={busDetail} onClose={onClose} />
+          <BusList bus={bus} onClose={onClose} />
         </div>
       </div>
       {isShowDetail && (
         <div className={cx('right-block')}>
-          <BusDetail busDetail={busDetail} setBusDetail={setBusDetail} />
+          <BusDetail />
         </div>
       )}
     </div>

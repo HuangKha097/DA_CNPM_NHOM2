@@ -3,12 +3,11 @@ import classNames from 'classnames/bind';
 import styles from '../../../assets/css/manager/StudentList.module.scss';
 import * as UserController from '../../../controller/UserController';
 import { ThreeDots } from 'react-loader-spinner';
+import { useStore } from '../../../zustand/store.js';
 
 const cx = classNames.bind(styles);
 
 const StudentList = ({
-  setStudentDetail,
-  studentDetail,
   student,
   showSelectCheck,
   setStudentsSelected,
@@ -19,6 +18,8 @@ const StudentList = ({
 }) => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { studentDetail, setStudentDetail } = useStore();
 
   useEffect(() => {
     const fetchStudentList = async () => {
@@ -132,7 +133,7 @@ const StudentList = ({
                     key={item._id || index}
                     onClick={() => {
                       onClose();
-                      setStudentDetail?.({
+                      setStudentDetail({
                         _id: item._id,
                         studentNumber: item.studentNumber,
                         fullName: item.name,
