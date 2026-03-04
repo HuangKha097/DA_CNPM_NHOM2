@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import * as BusSerVice from '../service/BusSerVice.js';
+import * as BusSerVice from '../service/BusService.js';
 
 const UseFetchBusByStatus = () => {
   const [buses, setBuses] = useState([]);
