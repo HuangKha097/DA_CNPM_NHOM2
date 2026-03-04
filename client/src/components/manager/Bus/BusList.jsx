@@ -8,7 +8,7 @@ import useStore from '../../../zustand/store.js';
 const cx = classNames.bind(styles);
 
 const List = ({ bus, onClose }) => {
-  const {busDetail, setBusDetail} = useStore();
+  const { busDetail, setBusDetail } = useStore();
   const { buses } = useFetchAllBuses(busDetail);
   const displayBuses = bus ? [bus] : buses?.data;
 

@@ -39,10 +39,6 @@ const generateTitle = (messageType) => {
 const NotificationTab = ({ user }) => {
     const [notifications, setNotifications] = useState([]);
     const [selected, setSelected] = useState(null);
-
-    console.log("====================================");
-    console.log(user);
-    console.log("====================================");
     useEffect(() => {
         const rawHistory = user?.messageHistory || [];
 

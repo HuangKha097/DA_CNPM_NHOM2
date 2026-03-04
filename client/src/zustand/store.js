@@ -19,6 +19,9 @@ const createBusDetailSlice = (set) => ({
     students: [],
   },
   setBusDetail: (value) => set((state) => ({ busDetail: { ...state.busDetail, ...value } })),
+
+  busesList:[],
+  setBusesList: (value) => set((state) => ({busesList: { ...state.busesList, ...value } })),
 });
 
 const createDriverDetailSlice = (set) => ({

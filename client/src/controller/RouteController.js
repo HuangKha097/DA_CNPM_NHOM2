@@ -18,11 +18,4 @@ export const fetchRouteNumber = async (routeName) => {
         return error;
     }
 };
-export const updateRoute = async (updatePayload) => {
-    try {
-        const res = await RouteService.updateRoute(updatePayload);
-        if (res?.success) return res;
-    } catch (error) {
-        return error;
-    }
-};
+
