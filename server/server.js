@@ -11,12 +11,14 @@ const app = express();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(
-    cors({
-        origin: "http://localhost:5173", // domain FE
-        credentials: true, // send cookie
-    })
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://shoolbus.netlify.app"
+    ],
+    credentials: true,
+  })
 );
-
 // Routes setup
 
 app.get("/api/status", (req, res) => {
